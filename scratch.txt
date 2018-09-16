@@ -1,0 +1,49 @@
+def log(message, answer):
+    print("\n ------")
+    from datetime import datetime
+    print(datetime.now())
+    print("Сообщение от {0} {1}. (id = {2} \n Текст - {3}".format(message.from_user.first_name, message.from_user.last_name, str(message.from_user.id), message.text))
+    print(answer)
+
+@bot.message_handler(commands=['help'])
+def handle_text(message):
+    bot.send_message(message.chat.id, """Начинай игру!""")
+
+@bot.message_handler(content_types=['text'])
+def handle_text(message):
+    answer = "Ты не умеешь играть в эту игру ("
+    if message.text == "a":
+        answer = "Б"
+        log(message, answer)
+        bot.send_message(message.chat.id,"б")
+    elif message.text == "б":
+        answer = "B"
+        bot.send_message(message.chat.id, "в")
+        log(message, answer)
+    else:
+        bot.send_message(message.chat.id, answer)
+        log(message, answer)
+
+bot.polling(none_stop=True, interval = 0)
+
+
+
+
+@bot.message_handler(commands=['Начать'])
+def handle_start(message):
+    bot.send_message(message.from_user.id, 'Начинай игру')
+    while 1:
+        last = 'a'
+        @bot.message_handler(content_types=['text'])
+        def handle_text(message):
+            last = message.text
+            for line in f:
+                if last[len(last) - 1].lower() == line[0].lower():
+                    bot.send_message(message.from_user.id, line)
+        #while last[0] == "/":
+        #    last = message.text
+        #for line in f:
+        #    if last[len(last) - 1].lower() == line[0].lower():
+        #        bot.send_message(message.from_user.id, line)
+        #        break
+
